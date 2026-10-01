@@ -13,7 +13,6 @@ We use a modified **Git Flow** strategy with `dev` as our default branch and `ma
 * `dev`: Primary integration branch (default branch for all work).
 * `feature/<feature-name>`: Temporary branches for individual tasks or features.
 
----
 
 ### Step-by-Step Feature Workflow
 
@@ -90,14 +89,14 @@ Smart street core feature implementation (feature)
 
 UI/UX design and flow definition (design)
 
-#📂 File Management
+### 📂 File Management
 Keep project documentation and other non-code Markdown assets in docs/.
 
 Keep long-form shared notes in the repository Wiki.
 
 Track large binary assets with Git LFS.
 
-#🔄 Team Workflow for Board Status Updates
+### 🔄 Team Workflow for Board Status Updates
 Move issue card to Todo when created.
 
 Move to In Progress when implementation starts.
