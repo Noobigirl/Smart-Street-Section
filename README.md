@@ -1,8 +1,8 @@
-# Smart-Street-Section
+# Smart Street Section Simulation
 
-CPE project.
+A software model of a hybrid green-gray street drainage waste system designed for high-density tropical urban environments  
 
----
+ ---
 
 ## 🔀 Git Workflow & Branch Strategy
 
@@ -44,7 +44,7 @@ git merge origin/dev
 
   ---
 
-##📋 Team Project Management Setup
+## 📋 Team Project Management Setup
 Use GitHub native tools with the following configuration:
 
 1) Project Board
@@ -52,7 +52,7 @@ Project title: `Team Weekly Goals`
 
 View type: `Board`
 
-Columns: `Todo`, `In Progress`, `In review`, `Done`
+Columns: `Todo`, `In Progress`, `In Review`, `Done`
 
 2) Milestone
 Milestone name: Sprint 1: [start date] - [end date]
@@ -101,7 +101,7 @@ Move issue card to Todo when created.
 
 Move to In Progress when implementation starts.
 
-Move to In review when opening a PR.
+Move to In Review when opening a PR.
 
 Move to Done after PR merge and acceptance.
 
