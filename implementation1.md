@@ -7,7 +7,6 @@
 In a smart street simulation, treating the entire cross-section as a single surface material introduces significant mathematical errors. The designated area consists of both highly impermeable pavement (the road) and highly permeable vegetated bio-retention zones. The system uses a **Composite Runoff Coefficient ($C_{\text{composite}}$)** to average the runoff characteristics based on proportional areas:
 
   
-
 $$C_{\text{composite}} = \frac{(C_{\text{pavement}} \cdot A_{\text{pavement}}) + (C_{\text{bioretention}} \cdot A_{\text{bioretention}})}{A_{\text{total}}}$$
 
 ### Standard Land Use Values:
@@ -234,7 +233,10 @@ Evaluates hydraulic thresholds to execute channel gate commands and prevent surf
     
       
     
-    $$\text{Actuator State}(t) = \begin{cases} \text{OPEN}, & \text{if } h(t) \ge H_{\text{TRIGGER\_OPEN}} \text{ or } Q_{\text{in}}(t) \ge Q_{\text{TRIGGER\_OPEN}} \\ \text{CLOSED}, & \text{if } h(t) < H_{\text{TRIGGER\_OPEN}} \text{ and Cooldown Timer elapsed} \end{cases}$$
+$${\text{Actuator State}}(t) = \begin{cases} 
+  \text{OPEN}, & \text{if } h(t) \ge H_{\text{TRIGGER}\_\text{OPEN}} \text{ or } Q_{\text{in}}(t) \ge Q_{\text{TRIGGER}\_\text{OPEN}} \\ 
+  \text{CLOSED}, & \text{if } h(t) < H_{\text{TRIGGER}\_\text{OPEN}} \text{ and Cooldown Timer elapsed} 
+\end{cases}$$
     
 -   **Stage Outputs:**
     
