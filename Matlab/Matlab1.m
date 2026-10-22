@@ -128,4 +128,13 @@ legend('600 x 400', '500 x 500', '800 x 200', 'Location', 'best');
 grid on;
 
 
+% creating a CSV file with 3 values: Q, h and t 
+
+time_column = time(:);
+Q_column = Qin_1(:);
+h_column = h1(:);
+
+module_1_inputs = table (time_column, Q_column, h_column);
+writetable(module_1_inputs, 'module_1_inputs.csv');
+
 
