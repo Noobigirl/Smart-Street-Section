@@ -26,7 +26,7 @@ For a $1000\text{ m}^2$ street section where the asphalt width makes up $800\tex
 
   
 
-$$C_{\text{composite}} = \frac{(0.85 \cdot 800) + (0.15 \cdot 200)}{1000} = 0.71$$
+$$C_{\text{composite}} = \frac{(0.70 \cdot 800) + (0.10 \cdot 200)}{1000} = 0.58$$
 
 ## 2. Bio-Retention Soil & Vegetation Specifications
 
