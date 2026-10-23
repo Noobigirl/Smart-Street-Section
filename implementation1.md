@@ -11,11 +11,11 @@ $$C_{\text{composite}} = \frac{(C_{\text{pavement}} \cdot A_{\text{pavement}}) +
 
 ### Standard Land Use Values:
 
--   **Impervious Street Pavement:** Downtown/Urban Business Area values range from $0.70 - 0.95$ (Design default: $0.85$).
+-   **Impervious Street Pavement:** Downtown/Urban Business Area values range from $0.70 - 0.95$ (Design default: $0.70$).
     
       
     
--   **Bio-Retention Surface:** Flat Lawn with Heavy/Engineered Soil at $2\%$ slope values range from $0.13 - 0.17$ (Design default: $0.15$).
+-   **Bio-Retention Surface:** Flat Lawn with Heavy/Engineered Soil at $2\%$ slope values range from $0.10 - 0.17$ (Design default: $0.10$).
     
       
     
