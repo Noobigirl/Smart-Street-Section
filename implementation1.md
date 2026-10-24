@@ -1,3 +1,4 @@
+
 # Module 1 Technical Baseline: Bio-Retention Surface & Hydraulic Control
 
 ## 1. Composite Runoff Coefficient ($C$) Calibration
@@ -120,7 +121,7 @@ Converts raw weather events into a volumetric amount of water hitting the entire
 * **Processing Logic:**
 Since $1\text{ mm}$ of rain over $1\text{ m}^2$ equals $1\text{ Liter}$, calculate the total Liters generated per second, then multiply by the time step.
 
-$$\text{volume\_in\_step} = \frac{(1-C_{\text{composite}}) \cdot I \cdot (A_{\text{pavement}} + A_{\text{bioretention}})}{3600} \cdot \Delta t \quad [\text{Liters}]$$
+$$\text{volume\-in\-step} = \frac{(1-C_{\text{composite}}) \cdot I \cdot (A_{\text{pavement}} + A_{\text{bioretention}})}{3600} \cdot \Delta t \quad [\text{Liters}]$$
 
 
 * **Stage Outputs:**
@@ -150,17 +151,17 @@ Tracks water soaking into the $0.5\text{ m}$ soil layer versus water ponding on 
 
 1. **Calculate Soil Capacity:**
 
-$$\text{soil\_max\_capacity} = A_{\text{bioretention}} \cdot 0.5\text{ m} \cdot \phi \cdot 1000 \quad [\text{Liters}]$$
+$$\text{soil\-max\-capacity} = A_{\text{bioretention}} \cdot 0.5\text{ m} \cdot \phi \cdot 1000 \quad [\text{Liters}]$$
 
 
 2. **Calculate Infiltration:**
 
-$$\text{Vol}_{\text{infilt}} = \min(\text{soil\_k\_sat} \cdot \Delta t, \text{ Available Soil Capacity}, \text{volume\_in\_step} + \text{Surface Water})$$
+$$\text{Vol}_{\text{infilt}} = \min(\text{soil\-k\-sat} \cdot \Delta t, \text{ Available Soil Capacity}, \text{volume\-in\-step} + \text{Surface Water})$$
 
 
 3. **Update Surface Water Depth ($h$):**
 
-$$h_{t+1} = \frac{(\text{volume\_in\_step} + \text{Previous Surface Water}) - \text{Vol}_{\text{infilt}}}{A_{\text{bioretention}}} \quad [\text{mm}]$$
+$$h_{t+1} = \frac{(\text{volume\-in\-step} + \text{Previous Surface Water}) - \text{Vol}_{\text{infilt}}}{A_{\text{bioretention}}} \quad [\text{mm}]$$
 
 
 
@@ -182,7 +183,13 @@ $$h_{t+1} = \frac{(\text{volume\_in\_step} + \text{Previous Surface Water}) - \t
 Saturation is the percentage of the current storage relative to maximum capacity:
 
 
-$$\text{Saturation } (\%) = \left( \frac{\text{currently\_stored\_water}}{\text{soil\_max\_capacity}} \right) \times 100$$
+$$
+\text{Saturation (\%)} =
+\left(
+\frac{\text{Currently Stored Water}}{\text{Soil Maximum Capacity}}
+\right)
+\times 100
+$$
 
 If one second of time passes ($\Delta t = 1$):
 
@@ -217,7 +224,7 @@ Evaluates surface puddle height to execute channel gate commands and prevent sur
 * **Processing Logic:**
 The system uses surface head height to trigger the actuators. Once opened, water bypasses the soil and drops directly into the $0.5\text{ m}$ deep underground channel. A safety cooldown timer is enforced before closing.
 
-$${\text{Actuator State}}(t) = \begin{cases} \text{OPEN}, & \text{if } h(t) \ge H_{\text{TRIGGER\_OPEN}} \\ \text{CLOSED}, & \text{if } h(t) < H_{\text{TRIGGER\_OPEN}} \text{ and Cooldown Timer elapsed} \end{cases}$$
+$${\text{Actuator State}}(t) = \begin{cases} \text{OPEN}, & \text{if } h(t) \ge H_{\text{TRIGGER\-OPEN}} \\ \text{CLOSED}, & \text{if } h(t) < H_{\text{TRIGGER\-OPEN}} \text{ and Cooldown Timer elapsed} \end{cases}$$
 
 
 * **Stage Outputs:**
