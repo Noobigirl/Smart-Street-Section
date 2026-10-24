@@ -108,141 +108,117 @@ Centipede grass is a warm-season turfgrass highly suited for shallow-soil urban 
 
 ### Stage 1: Surface Precipitation & Overland Runoff Generation
 
-Converts raw weather events into volumetric flow rates hitting the street section.
+Converts raw weather events into a volumetric amount of water hitting the entire street section per time step.
 
-  
+* **Simulated Sensor:** **Virtual Tipping-Bucket Rain Gauge** (measures real-time rainfall intensity).
+* **Primary Inputs:**
+* Precipitation Intensity ($I$, in $\text{mm/hr}$)
+* Surface Areas ($A_{\text{pavement}}$ and $A_{\text{bioretention}}$, in $\text{m}^2$)
+* Simulation Time Step ($\Delta t$, in seconds)
 
--   **Simulated sensor:** **Virtual Tipping-Bucket Rain Gauge** (measures real-time rainfall intensity).
-    
-      
-    
--   **Primary Inputs:**
-    
-      
-    -   Precipitation Intensity ($I$, in $\text{mm/hr}$)
-        
-          
-        
-    -   Surface Areas ($A_{\text{pavement}}$ and $A_{\text{bioretention}}$, in $\text{m}^2$)
-        
-          
-        
-    -   Simulation Time Step ($\Delta t$, in seconds)
-        
-          
-        
--   **Processing Logic:**
-    
-      
-    
-    $$Q_{\text{in}} = \frac{C_{\text{composite}} \cdot I \cdot (A_{\text{pavement}} + A_{\text{bioretention}})}{3.6 \times 10^6} \quad [\text{m}^3/\text{s}]$$
-    
--   **Stage Outputs:**
-    
-      
-    -   `volume_in_step`: Volume of water added to surface in the current tick ($\text{Liters}$).
-        
-          
-        
+
+* **Processing Logic:**
+Since $1\text{ mm}$ of rain over $1\text{ m}^2$ equals $1\text{ Liter}$, calculate the total Liters generated per second, then multiply by the time step.
+
+$$\text{volume\_in\_step} = \frac{(1-C_{\text{composite}}) \cdot I \cdot (A_{\text{pavement}} + A_{\text{bioretention}})}{3600} \cdot \Delta t \quad [\text{Liters}]$$
+
+
+* **Stage Outputs:**
+* `volume_in_step`: Total volume of water entering the bio-retention surface in the current tick ($\text{Liters}$).
+
+
+
+---
 
 ### Stage 2: Bio-Retention Infiltration & Soil Mass Balance
 
-Tracks water soaking into the soil versus water ponding on the surface.
+Tracks water soaking into the $0.5\text{ m}$ soil layer versus water ponding on the surface, before it passes into the $0.5\text{ m}$ underground channel.
 
-  
+* **Simulated Sensors:**
+* **Sub-Surface Volumetric Water Content (VWC) Sensor** (e.g., TDR equivalent) at $10\text{ cm}$ and $30\text{ cm}$ depths to measure soil saturation percentage ($\theta$).
+* **Ultrasonic Surface Water Level Sensor** mounted above the channel to measure standing head height ($h$).
 
--   **Simulated sensors:**
-    
-      
-    -   **Sub-Surface Volumetric Water Content (VWC) Sensor** (e.g., TDR equivalent) at $10\text{ cm}$ and $30\text{ cm}$ depths to measure soil saturation percentage ($\theta$).
-        
-          
-        
-    -   **Ultrasonic Surface Water Level Sensor** mounted above the channel to measure standing head height ($h$).
-        
-          
-        
--   **Primary Inputs:**
-    
-      
-    -   `volume_in_step` ($\text{Liters}$ from Stage 1)
-        
-          
-        
-    -   `soil_max_capacity` (Maximum moisture volume the BSM layer can retain)
-        
-          
-        
-    -   `soil_k_sat` (Max hydraulic conductivity of the BSM)
-        
-          
-        
--   **Processing Logic:**
-    
-    Determines actual infiltrated volume based on available soil capacity and incoming water, updates soil saturation state, and calculates any remaining unabsorbed surface water depth ($h_{t+1}$ in $\text{mm}$).
-    
-      
-    
--   **Stage Outputs:**
-    
-      
-    -   `soil_saturation_pct`: Updated moisture value mapped to the VWC sensor UI.
-        
-          
-        
-    -   `surface_water_depth_mm`: Standing water depth mapped to the Ultrasonic sensor UI.
-        
-          
-        
+
+* **Primary Inputs:**
+* `volume_in_step` ($\text{Liters}$ from Stage 1)
+* `soil_porosity` ($\phi \approx 0.40$ for BSM)
+* `soil_k_sat` (Max hydraulic conductivity of the BSM, converted to $\text{Liters/s}$)
+
+
+
+**Processing Logic:**
+
+1. **Calculate Soil Capacity:**
+
+$$\text{soil\_max\_capacity} = A_{\text{bioretention}} \cdot 0.5\text{ m} \cdot \phi \cdot 1000 \quad [\text{Liters}]$$
+
+
+2. **Calculate Infiltration:**
+
+$$\text{Vol}_{\text{infilt}} = \min(\text{soil\_k\_sat} \cdot \Delta t, \text{ Available Soil Capacity}, \text{volume\_in\_step} + \text{Surface Water})$$
+
+
+3. **Update Surface Water Depth ($h$):**
+
+$$h_{t+1} = \frac{(\text{volume\_in\_step} + \text{Previous Surface Water}) - \text{Vol}_{\text{infilt}}}{A_{\text{bioretention}}} \quad [\text{mm}]$$
+
+
+
+* **Stage Outputs:**
+* `soil_saturation_pct`: Updated moisture value mapped to the VWC sensor UI.
+* `surface_water_depth_mm` ($h$): Standing water depth mapped to the Ultrasonic sensor UI.
+
+
+
+> **Understanding the Infiltration `min()` Formula**
+> The water trying to soak into the ground is limited by three physical boundaries. The `min()` function acts as a reality check to find the active bottleneck:
+> 1. **The Speed Limit (`soil_k_sat * time_step`):** The physical maximum rate the dirt can swallow water per second.
+> 2. **The Empty Space (`Available Soil Capacity`):** How much room is left in the soil before it hits 100% capacity.
+> 3. **The Actual Water (`volume_in_step + Surface Water`):** The new rain from the current time step plus any leftover puddle from the previous step.
+> 
+> 
+
+**Saturation Calculation & Worked Example**
+Saturation is the percentage of the current storage relative to maximum capacity:
+
+
+$$\text{Saturation } (\%) = \left( \frac{\text{currently\_stored\_water}}{\text{soil\_max\_capacity}} \right) \times 100$$
+
+If one second of time passes ($\Delta t = 1$):
+
+* **Max Capacity:** $1000\text{ Liters}$ total.
+* **Current State:** Holds $980\text{ Liters}$ (leaving $20\text{ Liters}$ of **Available Capacity**).
+* **Speed Limit:** $15\text{ Liters}$ per second.
+* **Water on Top:** $5\text{ Liters}$ of new rain + $2\text{ Liters}$ of previous puddle = $7\text{ Liters}$ total.
+
+$$\text{Vol}_{\text{infilt}} = \min(15, \, 20, \, 7)$$
+
+Because 7 is the smallest constraint, exactly $7\text{ Liters}$ infiltrates.
+
+* The surface puddle drops to $0\text{ Liters}$.
+* `currently_stored_water` becomes $987\text{ Liters}$.
+* New soil saturation percentage is $98.7\%$.
+
+---
 
 ### Stage 3: Actuator Decision Logic & Mechanical State Machine
 
-Evaluates hydraulic thresholds to execute channel gate commands and prevent surface flooding.
+Evaluates surface puddle height to execute channel gate commands and prevent surface flooding.
 
-  
+* **Simulated Sensors:**
+* **Limit Switches** to confirm if the actuator gate is physically open or closed in the 3D space.
 
--   **Simulated sensors:**
-    
-      
-    -   **Differential Pressure Flow Sensor** to measure flow rate entering the drain.
-        
-          
-        
-    -   **Limit Switches** to confirm if the actuator gate is physically open or closed in the 3D space.
-        
-          
-        
--   **Primary Inputs:**
-    
-      
-    -   `surface_water_depth_mm` ($h$, from Stage 2)
-        
-          
-        
-    -   `Q_in_lps` (Instantaneous flow from Stage 1)
-        
-          
-        
-    -   Thresholds: `H_TRIGGER_OPEN` (e.g., $50\text{ mm}$ surface water) and `Q_TRIGGER_OPEN`
-        
-          
-        
--   **Processing Logic:**
-    
-    The system bypasses soil moisture sensors for trigger logic. Instead, it triggers strictly on surface head height or critical peak flow, enforcing a safety cooldown timer before closing.
-    
-      
-    
-$${\text{Actuator State}}(t) = \begin{cases} 
-  \text{OPEN}, & \text{if } h(t) \ge H_{\text{TRIGGER}\_\text{OPEN}} \text{ or } Q_{\text{in}}(t) \ge Q_{\text{TRIGGER}\_\text{OPEN}} \\ 
-  \text{CLOSED}, & \text{if } h(t) < H_{\text{TRIGGER}\_\text{OPEN}} \text{ and Cooldown Timer elapsed} 
-\end{cases}$$
-    
--   **Stage Outputs:**
-    
-      
-    -   `actuator_state`: Physical boolean state passed to the Godot 3D animation tree (`OPEN` / `CLOSED`).
-        
-          
-        
-    -   `Q_actuator_diverted`: Calculated volume of water successfully diverted away from the surface into the underground system ($\text{L/s}$).
+
+* **Primary Inputs:**
+* `surface_water_depth_mm` ($h$, from Stage 2)
+* Threshold: `H_TRIGGER_OPEN` (e.g., $50\text{ mm}$ surface water)
+
+
+* **Processing Logic:**
+The system uses surface head height to trigger the actuators. Once opened, water bypasses the soil and drops directly into the $0.5\text{ m}$ deep underground channel. A safety cooldown timer is enforced before closing.
+
+$${\text{Actuator State}}(t) = \begin{cases} \text{OPEN}, & \text{if } h(t) \ge H_{\text{TRIGGER\_OPEN}} \\ \text{CLOSED}, & \text{if } h(t) < H_{\text{TRIGGER\_OPEN}} \text{ and Cooldown Timer elapsed} \end{cases}$$
+
+
+* **Stage Outputs:**
+* `actuator_state`: Physical boolean state passed to the Godot 3D animation tree (`OPEN` / `CLOSED`).
