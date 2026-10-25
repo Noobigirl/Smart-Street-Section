@@ -1,12 +1,28 @@
 function interactive_smart_street_sim()
     % MODULE 1 TECHNICAL BASELINE SIMULATION
     
-    % --- Main Window ---
-    % Expanded figure size for a spacious, non-cramped UI layout
+    % --- Dynamic Screen-Aware Main Window ---
+    screen_size = get(0, 'ScreenSize'); % [left, bottom, width, height]
+    sw = screen_size(3);
+    sh = screen_size(4);
+    
+    % Scale appropriately for 13" laptops and high-DPI scaling
+    fig_w = min(1200, round(sw * 0.90));
+    fig_h = min(680, round(sh * 0.85));
+    fig_x = max(10, round((sw - fig_w) / 2));
+    fig_y = max(30, round((sh - fig_h) / 2));
+
     fig = uifigure('Name', 'Smart Street Module 1: Bio-Retention & Hydraulic Control', ...
-                   'Position', [50 50 1300 750], ...
+                   'Position', [fig_x fig_y fig_w fig_h], ...
                    'Color', [0.93 0.95 0.98]);
                    
+    % Top-level responsive grid layout ('1x' used for flexible proportion)
+    grid_main = uigridlayout(fig, [1 2]);
+    grid_main.ColumnWidth = {360, '1x'};
+    grid_main.RowHeight = {'1x'};
+    grid_main.Padding = [10 10 10 10];
+    grid_main.ColumnSpacing = 10;
+
     % Reference surface parameters
     pavement_data = struct(...
         'name', {'Asphaltic Street (0.70 - 0.95)', 'Concrete Street (0.80 - 0.95)', 'Brick Street (0.70 - 0.85)', 'Drives and Walks (0.75 - 0.85)'}, ...
@@ -21,9 +37,10 @@ function interactive_smart_street_sim()
         'default', {0.10, 0.05, 0.10, 0.15});
         
     % --- Left Control Panel ---
-    % Scrollable panel prevents overcrowding. Internal y-coordinates range up to 1250px to provide generous spacing between controls and slider tick labels.
-    panel = uipanel(fig, 'Title', 'SIMULATION PARAMETERS', 'Position', [15 15 360 720], ...
+    panel = uipanel(grid_main, 'Title', 'SIMULATION PARAMETERS', ...
                     'BackgroundColor', [0.97 0.98 0.95], 'Scrollable', 'on');
+    panel.Layout.Row = 1;
+    panel.Layout.Column = 1;
                     
     % 1. Pavement Controls
     uilabel(panel, 'Text', '1. PAVEMENT SURFACE CHARACTERISTICS', 'Position', [15 1200 320 20], 'FontWeight', 'bold', 'FontColor', [0.10 0.30 0.60]);
@@ -83,25 +100,47 @@ function interactive_smart_street_sim()
     lbl_val_Htrig = uilabel(panel, 'Text', '50 mm', 'Position', [230 165 105 18], 'FontWeight', 'bold', 'HorizontalAlignment', 'right');
     slider_Htrig = uislider(panel, 'Position', [20 140 310 3], 'Limits', [10 100], 'Value', 50, 'MajorTicks', 10:20:90);
     
-    % Summary Label at bottom with sufficient clearance below the last slider
+    % Summary Label at bottom with sufficient clearance
     lbl_summary = uilabel(panel, 'Position', [15 15 330 80], 'Text', '', 'WordWrap', 'on', 'FontSize', 9.5, 'FontWeight', 'bold');
     
-    % --- Tab Container ---
-    tabgroup = uitabgroup(fig, 'Position', [390 15 890 720]);
+    % --- Tab Container & Dynamic Grids ---
+    tabgroup = uitabgroup(grid_main);
+    tabgroup.Layout.Row = 1;
+    tabgroup.Layout.Column = 2;
     
     % TAB 1: C_composite Optimization
     tab1 = uitab(tabgroup, 'Title', 'C_composite Optimization');
-    ax_comp = uiaxes(tab1, 'Position', [30 30 830 630]);
+    grid_tab1 = uigridlayout(tab1, [1 1]);
+    grid_tab1.Padding = [10 10 10 10];
+    ax_comp = uiaxes(grid_tab1);
+    ax_comp.Layout.Row = 1;
+    ax_comp.Layout.Column = 1;
     
     % TAB 2: Stage 1 Runoff & Stage 2 Soil Saturation
     tab2 = uitab(tabgroup, 'Title', 'Stage 1 Runoff & Stage 2 Soil Saturation (VWC)');
-    ax_vol  = uiaxes(tab2, 'Position', [30 355 830 300]);
-    ax_soil = uiaxes(tab2, 'Position', [30 35 830 280]);
+    grid_tab2 = uigridlayout(tab2, [2 1]);
+    grid_tab2.RowHeight = {'1x', '1x'};
+    grid_tab2.Padding = [10 10 10 10];
+    grid_tab2.RowSpacing = 10;
+    ax_vol  = uiaxes(grid_tab2);
+    ax_vol.Layout.Row = 1;
+    ax_vol.Layout.Column = 1;
+    ax_soil = uiaxes(grid_tab2);
+    ax_soil.Layout.Row = 2;
+    ax_soil.Layout.Column = 1;
     
     % TAB 3: Stage 2 Puddle Depth & Stage 3 Gate Actuation
     tab3 = uitab(tabgroup, 'Title', 'Stage 2 Puddle Depth & Stage 3 Gate Actuation');
-    ax_h    = uiaxes(tab3, 'Position', [30 355 830 300]);
-    ax_gate = uiaxes(tab3, 'Position', [30 35 830 280]);
+    grid_tab3 = uigridlayout(tab3, [2 1]);
+    grid_tab3.RowHeight = {'1x', '1x'};
+    grid_tab3.Padding = [10 10 10 10];
+    grid_tab3.RowSpacing = 10;
+    ax_h    = uiaxes(grid_tab3);
+    ax_h.Layout.Row = 1;
+    ax_h.Layout.Column = 1;
+    ax_gate = uiaxes(grid_tab3);
+    ax_gate.Layout.Row = 2;
+    ax_gate.Layout.Column = 1;
     
     % Bind Callbacks
     drop_pave.ValueChangedFcn     = @(~,~) updatePaveLimits();
@@ -189,41 +228,37 @@ function interactive_smart_street_sim()
         ylabel(ax_comp, 'C_{composite}');
         legend(ax_comp, {'C_{composite} Curve', 'Realistic Urban Zone (15–30%)', 'Operating Point'}, 'Location', 'northeast', 'Color', [0.90 0.90 0.90]);
         
-        % disabling the zooming while keeping data tips on hover
         ax_comp.Interactions = dataTipInteraction;
         enableDefaultInteractivity(ax_comp);
         
         % --- 3. STAGE-BY-STAGE DISCRETE SIMULATION LOOP ---
         storm_dur_sec = storm_dur_min * 60;
-        total_sim_sec = storm_dur_sec * 1.8; % Extend timeline to observe post-rain drying & drainage
+        total_sim_sec = storm_dur_sec * 1.8;
         time_sec = 0:dt:total_sim_sec;
         num_ticks = length(time_sec);
         
-        % BSM Soil Layer Specifications (0.5m deep layer)
         soil_depth_m = 0.5; 
-        soil_max_capacity_L = A_bio_curr * soil_depth_m * phi * 1000; % [Liters] Max soil water capacity
-        soil_k_sat_Lps = (A_bio_curr * ksat_mmhr) / 3600;            % [Liters/sec] Max infiltration rate
+        soil_max_capacity_L = A_bio_curr * soil_depth_m * phi * 1000;
+        soil_k_sat_Lps = (A_bio_curr * ksat_mmhr) / 3600;
         
-        % Arrays for multi-stage tracking
         volume_in_step_liters = zeros(1, num_ticks);
         cum_rain_volume_L     = zeros(1, num_ticks);
         soil_vol_liters       = zeros(1, num_ticks);
         soil_saturation_pct   = zeros(1, num_ticks);
         surface_vol_liters    = zeros(1, num_ticks);
         h_puddle_mm           = zeros(1, num_ticks);
-        actuator_state        = zeros(1, num_ticks); % 0 = CLOSED, 1 = OPEN
+        actuator_state        = zeros(1, num_ticks);
         
-        cooldown_timer = 0; % Track gate cooldown state machine
+        cooldown_timer = 0;
         
         for t = 1:num_ticks
             curr_t = time_sec(t);
             
             % --- STAGE 1: Overland Runoff Generation ---
-            % Formula: volume_in_step = ((1 - C_comp) * I * A_total / 3600) * dt  [Liters]
             if curr_t <= storm_dur_sec
-                vol_step = ((1 - C_comp_curr) * I_mean * Atotal / 3600) * dt; % Active rainfall phase
+                vol_step = ((1 - C_comp_curr) * I_mean * Atotal / 3600) * dt;
             else
-                vol_step = 0; % Post-rainfall phase
+                vol_step = 0;
             end
             volume_in_step_liters(t) = vol_step;
             
@@ -242,53 +277,47 @@ function interactive_smart_street_sim()
                 prev_surface_vol = surface_vol_liters(t-1);
             end
             
-            % Available soil storage space and max possible infiltration speed
             avail_soil_cap = max(0, soil_max_capacity_L - prev_soil_vol);
             max_infilt_rate = soil_k_sat_Lps * dt;
             water_on_surface = vol_step + prev_surface_vol;
             
-            % Triple bottleneck check: min(K_sat, Available Capacity, Surface Water)
             vol_infilt = min([max_infilt_rate, avail_soil_cap, water_on_surface]);
             vol_infilt = max(0, vol_infilt);
             
-            % Update soil layer storage and saturation VWC %
             curr_soil_vol = prev_soil_vol + vol_infilt;
             soil_vol_liters(t) = curr_soil_vol;
-            soil_saturation_pct(t) = (curr_soil_vol / soil_max_capacity_L) * 100; % Sub-Surface VWC Sensor output
+            soil_saturation_pct(t) = (curr_soil_vol / soil_max_capacity_L) * 100;
             
-            % Residual surface water volume & head height calculation
             rem_surface_vol = water_on_surface - vol_infilt;
-            raw_h_mm = rem_surface_vol / A_bio_curr; % Surface Water Level [mm]
+            raw_h_mm = rem_surface_vol / A_bio_curr;
             
-            % --- STAGE 3: Actuator Decision Logic & State Machine ---
-            % Trigger OPEN if standing water exceeds threshold
+            % --- STAGE 3: Actuator Decision Logic ---
             if raw_h_mm >= H_TRIGGER_OPEN
-                act_state = 1; % OPEN
-                cooldown_timer = cooldown_dur_sec; % Reset cooldown
+                act_state = 1;
+                cooldown_timer = cooldown_dur_sec;
             else
                 if cooldown_timer > 0
-                    act_state = 1; % Remain OPEN during cooldown
+                    act_state = 1;
                     cooldown_timer = cooldown_timer - dt;
                 else
-                    act_state = 0; % CLOSED
+                    act_state = 0;
                 end
             end
             actuator_state(t) = act_state;
             
-            % If Actuator is OPEN, water drops into 0.5m underground channel
             if act_state == 1
                 surface_vol_liters(t) = 0;
                 h_puddle_mm(t) = 0;
             else
                 surface_vol_liters(t) = rem_surface_vol;
-                h_puddle_mm(t) = raw_h_mm; % Ultrasonic Sensor output
+                h_puddle_mm(t) = raw_h_mm;
             end
         end
         
         time_min = time_sec / 60;
         
         % --- 4. RENDER TELEMETRY GRAPHS ---
-        % TAB 2 Graph 1: Stage 1 Inflow Volume & Cumulative Water
+        % TAB 2 Graph 1: Stage 1 Inflow Volume
         cla(ax_vol);
         yyaxis(ax_vol, 'left');
         plot(ax_vol, time_min, cum_rain_volume_L, 'b-', 'LineWidth', 1.6);
@@ -301,7 +330,7 @@ function interactive_smart_street_sim()
         title(ax_vol, sprintf('Stage 1: Overland Inflow Volume per Step (dt = %.1f s)', dt));
         xlabel(ax_vol, 'Time (Minutes)');
         
-        % TAB 2 Graph 2: Stage 2 Sub-Surface Soil Saturation (VWC Telemetry)
+        % TAB 2 Graph 2: Stage 2 Sub-Surface Soil Saturation
         cla(ax_soil);
         plot(ax_soil, time_min, soil_saturation_pct, 'm-', 'LineWidth', 1.6); hold(ax_soil, 'on');
         yline(ax_soil, 100, 'k--', '100% Saturation Capacity', 'LineWidth', 1.2); hold(ax_soil, 'off');
@@ -311,7 +340,7 @@ function interactive_smart_street_sim()
         ylabel(ax_soil, 'Soil Saturation (%)');
         ylim(ax_soil, [0 115]);
         
-        % TAB 3 Graph 1: Stage 2 Surface Puddle Depth h(t) (Ultrasonic Sensor Telemetry)
+        % TAB 3 Graph 1: Stage 2 Surface Puddle Depth h(t)
         cla(ax_h);
         plot(ax_h, time_min, h_puddle_mm, 'g-', 'LineWidth', 1.5); hold(ax_h, 'on');
         yline(ax_h, H_TRIGGER_OPEN, 'r--', sprintf('Trigger Threshold (%.0f mm)', H_TRIGGER_OPEN), 'LineWidth', 1.2); hold(ax_h, 'off');
@@ -320,7 +349,7 @@ function interactive_smart_street_sim()
         xlabel(ax_h, 'Time (Minutes)');
         ylabel(ax_h, 'Puddle Depth (mm)');
         
-        % TAB 3 Graph 2: Stage 3 Actuator Gate State (Limit Switch Telemetry)
+        % TAB 3 Graph 2: Stage 3 Actuator Gate State
         cla(ax_gate);
         stairs(ax_gate, time_min, actuator_state, 'Color', [0.5 0 0.5], 'LineWidth', 1.8);
         grid(ax_gate, 'on');
