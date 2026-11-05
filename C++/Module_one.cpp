@@ -1,103 +1,97 @@
 #include <iostream>
-#include <string>
 #include <fstream>
 #include <vector>
+#include <string>
+
 using namespace std;
 
-vector<double> time_min;
-vector<double> h;
-vector<double> Q;
+const double OPEN_LEVEL = 50.0;
+const double CLOSE_LEVEL = 40.0;
+const double WAIT_TIME = 5.0;
 
-void read_file() {
-	
-	ifstream file("..\\Matlab\\module_1_inputs.csv");
-
-	if(!file.is_open()) {
-	
-		cout << "Error opening file!" << endl;
-
-	}
-	else {
-		cout << "File opened successfully!" << endl;
-	}
-
-	char comma;
-	double time_v, h_v, Q_v;
-
-	string line;
-	getline(file, line);
-
-	while (file>> time_v >> comma>>Q_v >>comma>>h_v) {
-		
-		time_min.push_back(time_v);
-		Q.push_back(Q_v);
-		h.push_back(h_v);
-
-	}
-	file.close();
-
-
-	cout << "Time: "<< time_min.size() << endl;
-	cout << "Q: "<< Q.size() << endl;
-	cout << "H: "<< h.size() << endl;
-}
-
-// Timer is to prevent the actuator from opening and closing rapidly
-
-bool timer_start()
+int main()
 {
-	int timer = 0;
-	static int count = 5;
-	count--;
-	if (count == timer) {
-		count = 5;
-		return true;
-	}
-	return false;
+    ifstream input("../Matlab/module_1_final_inputs.csv");
+
+    if (!input)
+    {
+        cout << "Cannot open file." << endl;
+        return 1;
+    }
+
+    vector<double> time;
+    vector<double> height;
+
+    string header;
+    getline(input, header); 
+
+    double t, h;
+    char comma;
+
+    while (input >> t >> comma >> h)
+    {
+        time.push_back(t);
+        height.push_back(h);
+    }
+
+    input.close();
+
+    vector<int> gateState;
+
+    bool gateOpen = false;
+    bool timerStarted = false;
+    double startTime = 0;
+
+    for (int i = 0; i < height.size(); i++)
+    {
+        double currentHeight = height[i];
+        double currentTime = time[i];
+
+        if (currentHeight >= OPEN_LEVEL)
+        {
+            gateOpen = true;
+            timerStarted = false;
+        }
+        else if (gateOpen)
+        {
+            if (currentHeight < CLOSE_LEVEL)
+            {
+                if (!timerStarted)
+                {
+                    startTime = currentTime;
+                    timerStarted = true;
+                }
+
+                if (currentTime - startTime >= WAIT_TIME)
+                {
+                    gateOpen = false;
+                    timerStarted = false;
+                }
+            }
+            else
+            {
+                timerStarted = false;
+            }
+        }
+
+        if (gateOpen)
+            gateState.push_back(1);
+        else
+            gateState.push_back(0);
+    }
+
+    ofstream output("../Matlab/actuator_states.csv");
+
+    output << "time_min,actuator_state\n";
+
+    for (int i = 0; i < gateState.size(); i++)
+    {
+        output << time[i] << "," << gateState[i] << endl;
+    }
+
+    output.close();
+
+    cout << "Output file created successfully." << endl;
+
+    return 0;
 }
-
-bool actuator(const vector<double>& h, const vector<double>& Q) {
-//HTo is the trigger value for height of water puddle
-//QTo is the trigger value for flow rate of water
-	
-	double HTo = 0.004;
-	double QTo = 0.15;
-	
-	bool actuator_state = false;
-	
-
-	for (int i = 0; i < 200; i++) {
-
-		bool actuator_on = h[i] >= HTo || Q[i] >= QTo;
-		bool actuator_off = h[i] < HTo && Q[i] < QTo;
-		bool anti_chatter;
-
-		if (actuator_on)
-		{
-			cout << "Actuator gates are open!!! at: " << i << endl;
-			actuator_state = true;
-			
-		}
-		else if (actuator_state) {
-			bool anti_chatter = timer_start();
-		}
-		if (anti_chatter && actuator_off)
-		{
-			cout << "Actuator gates are closed!!! at: " << i << endl;
-			actuator_state = false;
-
-		}
-
-		cout << "Actuator state: " << actuator_state << endl;
-	}
-	
-return actuator_state;
-
-}
-
-int main() {
-	read_file();
-	actuator(h, Q);
-	return 0;
-}
-
