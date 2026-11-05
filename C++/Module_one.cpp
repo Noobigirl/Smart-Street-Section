@@ -1,12 +1,13 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <vector>
+#include <vector> // library for dynamic arrays
 using namespace std;
 
+// declaring dynamic arrays of type <double> to contain readings from csv file
 vector<double> time_min;
 vector<double> h;
-vector<double> Q;
+vector<double> Q; 
 
 void read_file() {
 	
@@ -24,12 +25,14 @@ void read_file() {
 	char comma;
 	double time_v, h_v, Q_v;
 
+	// ### you don't acually use this in the rest of the code. if it is not necessary, remove it pls. 
 	string line;
 	getline(file, line);
 
-	while (file>> time_v >> comma>>Q_v >>comma>>h_v) {
+	while (file>> time_v >>comma >>Q_v >>comma >>h_v) {
 		
-		time_min.push_back(time_v);
+		// pushing each reading to the corresponding array
+		time_min.push_back(time_v); 
 		Q.push_back(Q_v);
 		h.push_back(h_v);
 
@@ -59,6 +62,8 @@ bool timer_start()
 bool actuator(const vector<double>& h, const vector<double>& Q) {
 //HTo is the trigger value for height of water puddle
 //QTo is the trigger value for flow rate of water
+
+// ### I thought we were no longer using Q to handle the actuator states. Maybe you should remove it.
 	
 	double HTo = 0.004;
 	double QTo = 0.15;
