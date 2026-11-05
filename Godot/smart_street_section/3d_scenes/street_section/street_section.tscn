@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://biem15e5p0bc4"]
+
+[ext_resource type="PackedScene" uid="uid://cx6njrpils0iu" path="res://assets/Models/GLB format/road-crossing.glb" id="1_gr2xf"]
+[ext_resource type="PackedScene" uid="uid://cu6jcshdpcc12" path="res://assets/Models/GLB format/road-driveway-double.glb" id="2_8nsdm"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_mksn4"]
+size = Vector3(1.5438232, 1, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_mbkrp"]
+
+[node name="StreetSection" type="Node3D" unique_id=857182125]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=67438632]
+transform = Transform3D(25, 0, 0, 0, 2, 0, 0, 0, 1, 5.7816825, 0, 0)
+visible = false
+mesh = SubResource("BoxMesh_mksn4")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=641337258]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 25, 5.7816825, 0, 25.378246)
+visible = false
+mesh = SubResource("PlaneMesh_mbkrp")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="." unique_id=826476779]
+transform = Transform3D(25, 0, 0, 0, 2, 0, 0, 0, 1, 5.7816825, 0, 50.578415)
+visible = false
+mesh = SubResource("BoxMesh_mksn4")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="." unique_id=1359301381]
+transform = Transform3D(25, 0, 0, 0, 3, 0, 0, 0, 25, 5.7816825, 0, -13.010151)
+visible = false
+mesh = SubResource("BoxMesh_mksn4")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="." unique_id=346663719]
+transform = Transform3D(25, 0, 0, 0, 2, 0, 0, 0, 1, 5.7816825, 0, -25.949223)
+visible = false
+mesh = SubResource("BoxMesh_mksn4")
+
+[node name="road-crossing2" parent="." unique_id=485207434 instance=ExtResource("1_gr2xf")]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+
+[node name="road-driveway-double2" parent="." unique_id=720387841 instance=ExtResource("2_8nsdm")]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 99.68619, 0, 0)
