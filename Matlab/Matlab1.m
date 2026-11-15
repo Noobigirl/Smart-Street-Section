@@ -1,23 +1,28 @@
 clear;
 clc;
 
-% randomize inputs for rainfall and linear inputs for time (Assuming our min I is 2mm and max I is 200mm)
+% randomize inputs for rainfall and linear inputs for time (Assuming our min I is 2mm = light rain, and max I is 80mm= violent storm)
 % step 1 :)
 
 minI=2;
-maxI=200;
-test_cases = [
-    linspace(1, 400, 200);
-    minI+(maxI-minI)*rand(1, 200);];
+maxI=80;
+
+% Here, we are trying to see the behavior for varying rainfall
+
+% column array containing the time (in hr) and rainfall intensity (in
+% mm/hr)
+test_cases = [linspace(1, 24, 200);linspace(minI,maxI,200);];
 
 time = test_cases(1, :);
-I =test_cases(2,:);
-rainfall = movmean(I, 30);
-CP = 0.85; 
-CBr = 0.15; 
+I = test_cases(2,:);
+rainfall = movmean(I, 30); %what does this line do?
 
-Area_tests = [600, 500, 800;
-                400, 500, 200;];
+% Tests should also be run to find the ideal runoff coefficient C
+CP = 0.85; % for pavement
+CBr = 0.15; % for Bio-retention surface
+
+%             pavement area; bio-retention surface area
+Area_tests = [600, 500, 800; 400, 500, 200;];
 
 Qin_1 = zeros (1, 200);
 Vin_1 = zeros (1, 200);
