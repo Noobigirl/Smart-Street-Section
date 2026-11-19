@@ -1,12 +1,22 @@
 [gd_scene format=3 uid="uid://biem15e5p0bc4"]
 
+[ext_resource type="PackedScene" uid="uid://u7f40ueh06al" path="res://assets/Models/GLB format/road-end.glb" id="1_8nsdm"]
 [ext_resource type="PackedScene" uid="uid://cx6njrpils0iu" path="res://assets/Models/GLB format/road-crossing.glb" id="1_gr2xf"]
-[ext_resource type="PackedScene" uid="uid://cu6jcshdpcc12" path="res://assets/Models/GLB format/road-driveway-double.glb" id="2_8nsdm"]
+[ext_resource type="PackedScene" uid="uid://8g8dmraolbqn" path="res://assets/Models/GLB format/road-straight.glb" id="2_m213o"]
 
 [node name="StreetSection" type="Node3D" unique_id=857182125]
 
-[node name="road-crossing2" parent="." unique_id=485207434 instance=ExtResource("1_gr2xf")]
+[node name="road-end" parent="." unique_id=1858494554 instance=ExtResource("1_8nsdm")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -20, 0, 0)
+
+[node name="road-straight" parent="." unique_id=455586815 instance=ExtResource("2_m213o")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -10, 0, 0)
+
+[node name="road-crossing" parent="." unique_id=485207434 instance=ExtResource("1_gr2xf")]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
-[node name="road-driveway-double2" parent="." unique_id=720387841 instance=ExtResource("2_8nsdm")]
+[node name="road-straight1" parent="." unique_id=693270845 instance=ExtResource("2_m213o")]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 10, 0, 0)
+
+[node name="road-end1" parent="." unique_id=1512422344 instance=ExtResource("1_8nsdm")]
+transform = Transform3D(-10, 0, -8.742278e-07, 0, 10, 0, 8.742278e-07, 0, -10, 20, 0, 0)

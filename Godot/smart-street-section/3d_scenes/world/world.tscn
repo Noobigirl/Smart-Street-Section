@@ -42,21 +42,22 @@ light_indirect_energy = 0.0
 shadow_enabled = true
 directional_shadow_max_distance = 24.0
 
-[node name="Map" type="Node3D" parent="." unique_id=1750459848]
+[node name="Floor" type="Node3D" parent="." unique_id=1750459848]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
-[node name="Floor" type="StaticBody3D" parent="Map" unique_id=807424801]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Floor" unique_id=1582953512]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1582953512]
 material_override = SubResource("StandardMaterial3D_e5mrw")
 mesh = SubResource("QuadMesh_hod6x")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Floor" unique_id=1257268936]
+[node name="Floor" type="StaticBody3D" parent="Floor" unique_id=807424801]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/Floor" unique_id=1257268936]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
 shape = SubResource("BoxShape3D_1ffxv")
 debug_color = Color(0.7696154, 0.40394756, 0.50025624, 0.85490197)
 
 [node name="StreetSection" parent="." unique_id=857182125 instance=ExtResource("1_132de")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.106703, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16953087, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1160022686]
-transform = Transform3D(-4.3535373e-08, -0.5956148, 0.8032702, 3.9187693e-09, 0.8032702, 0.5956148, -1, 2.9078143e-08, -3.2636592e-08, 14.57073, 10.212931, 0)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -35, 10, 0)
