@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://cy4ddwr26ciox"]
+
+[ext_resource type="PackedScene" uid="uid://biem15e5p0bc4" path="res://3d_scenes/street_section/street_section.tscn" id="1_132de"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tnwvm"]
+sky_top_color = Color(0.5059727, 0.7409701, 0.72204995, 1)
+sky_horizon_color = Color(1.2061193, 1.2776139, 1.2728838, 1)
+ground_bottom_color = Color(0.43529412, 0.4862745, 0.4862745, 1)
+ground_horizon_color = Color(1.2061193, 1.2776139, 1.2728838, 1)
+
+[sub_resource type="Sky" id="Sky_132de"]
+sky_material = SubResource("ProceduralSkyMaterial_tnwvm")
+
+[sub_resource type="Environment" id="Environment_55u4n"]
+background_mode = 1
+background_color = Color(0.43529412, 0.4862745, 0.4862745, 1)
+background_energy_multiplier = 0.6
+sky = SubResource("Sky_132de")
+tonemap_mode = 2
+sdfgi_enabled = true
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e5mrw"]
+albedo_color = Color(0.43529412, 0.4862745, 0.4862745, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_hod6x"]
+size = Vector2(30, 30)
+orientation = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1ffxv"]
+size = Vector3(30, 0.3, 30)
+
+[node name="World" type="Node3D" unique_id=148720408]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=767432727]
+environment = SubResource("Environment_55u4n")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1973164809]
+transform = Transform3D(-0.962218, -0.26186314, 0.074593686, 0, 0.27395925, 0.9617413, -0.27228022, 0.9254048, -0.26360852, 0, 0, 0)
+light_color = Color(0.43529412, 0.4862745, 0.4862745, 1)
+light_indirect_energy = 0.0
+shadow_enabled = true
+directional_shadow_max_distance = 24.0
+
+[node name="Map" type="Node3D" parent="." unique_id=1750459848]
+
+[node name="Floor" type="StaticBody3D" parent="Map" unique_id=807424801]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Floor" unique_id=1582953512]
+material_override = SubResource("StandardMaterial3D_e5mrw")
+mesh = SubResource("QuadMesh_hod6x")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Floor" unique_id=1257268936]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+shape = SubResource("BoxShape3D_1ffxv")
+debug_color = Color(0.7696154, 0.40394756, 0.50025624, 0.85490197)
+
+[node name="StreetSection" parent="." unique_id=857182125 instance=ExtResource("1_132de")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.106703, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1160022686]
+transform = Transform3D(-4.3535373e-08, -0.5956148, 0.8032702, 3.9187693e-09, 0.8032702, 0.5956148, -1, 2.9078143e-08, -3.2636592e-08, 14.57073, 10.212931, 0)

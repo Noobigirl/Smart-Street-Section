@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://biem15e5p0bc4"]
+
+[ext_resource type="PackedScene" uid="uid://cx6njrpils0iu" path="res://assets/Models/GLB format/road-crossing.glb" id="1_gr2xf"]
+[ext_resource type="PackedScene" uid="uid://cu6jcshdpcc12" path="res://assets/Models/GLB format/road-driveway-double.glb" id="2_8nsdm"]
+
+[node name="StreetSection" type="Node3D" unique_id=857182125]
+
+[node name="road-crossing2" parent="." unique_id=485207434 instance=ExtResource("1_gr2xf")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="road-driveway-double2" parent="." unique_id=720387841 instance=ExtResource("2_8nsdm")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 10, 0, 0)
