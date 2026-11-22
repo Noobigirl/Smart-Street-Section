@@ -105,3 +105,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.273934, -0.79875153, -30.3
 
 [node name="EdgeChannel2" parent="channel" unique_id=218550736 instance=ExtResource("5_ls1bf")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -8.273936, -0.79875153, 7.4670944)
+
+[node name="channel2" type="Node3D" parent="." unique_id=1148681551]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.3962145, 0.6187515, -15.323936)
+
+[node name="ClosedChannel" parent="channel2" unique_id=1959175521 instance=ExtResource("3_aq4bg")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -8.272155, -0.80821824, -30.450592)
+visible = false
+
+[node name="MiddleChannel" parent="channel2" unique_id=1470456675 instance=ExtResource("4_1c485")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -8.273935, -0.79875153, -20.396215)
+
+[node name="MiddleChannel2" parent="channel2" unique_id=1613567282 instance=ExtResource("4_1c485")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -8.273935, -0.79875153, -2.801628)
+
+[node name="MiddleChannel3" parent="channel2" unique_id=1987999249 instance=ExtResource("4_1c485")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -8.273935, -0.79875153, -10.525096)
+
+[node name="EdgeChannel" parent="channel2" unique_id=539976243 instance=ExtResource("5_ls1bf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.273934, -0.79875153, -30.396215)
+
+[node name="EdgeChannel2" parent="channel2" unique_id=1304371266 instance=ExtResource("5_ls1bf")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -8.273936, -0.79875153, 7.4670944)

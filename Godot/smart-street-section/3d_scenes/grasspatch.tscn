@@ -2,4 +2,14 @@
 
 [ext_resource type="PackedScene" uid="uid://13f1h5hypee0" path="res://assets/Models/grassPatch/grasspatch.glb" id="1_7mj86"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_mksn4"]
+size = Vector3(11.891777, 2.1242676, 4.0983276)
+
 [node name="grasspatch" unique_id=55790287 instance=ExtResource("1_7mj86")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="0" unique_id=642380276]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1431159950]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.013153076, 0.274292, 0.08047867)
+shape = SubResource("BoxShape3D_mksn4")
+debug_color = Color(0.34509805, 0.61960787, 0.12941177, 0.9019608)
