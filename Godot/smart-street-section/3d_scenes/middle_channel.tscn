@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bknqer2wa7gob"]
 
 [ext_resource type="PackedScene" uid="uid://d3yg5tqyritb2" path="res://assets/Models/middleChannel/middle_channel.glb" id="1_1nav3"]
-[ext_resource type="Script" uid="uid://befwp8hswkm6t" path="res://3d_scenes/interactive_object.gd" id="2_5v74g"]
+[ext_resource type="Script" uid="uid://befwp8hswkm6t" path="res://3d_scenes/overlay_feedback.gd" id="2_5v74g"]
 
 [node name="MiddleChannel" unique_id=471620333 instance=ExtResource("1_1nav3")]
 

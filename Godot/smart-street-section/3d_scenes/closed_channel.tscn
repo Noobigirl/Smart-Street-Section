@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://cvde0pgpx655j"]
 
 [ext_resource type="PackedScene" uid="uid://dn3wtra8bjsc8" path="res://assets/Models/closedChannel/closed_channel.glb" id="1_elm41"]
-[ext_resource type="Script" uid="uid://befwp8hswkm6t" path="res://3d_scenes/interactive_object.gd" id="2_onxqv"]
+[ext_resource type="Script" uid="uid://befwp8hswkm6t" path="res://3d_scenes/overlay_feedback.gd" id="2_onxqv"]
 
 [node name="ClosedChannel" unique_id=1437359752 instance=ExtResource("1_elm41")]
 
-[node name="InteractiveObject" type="Node" parent="closed" parent_id_path=PackedInt32Array(113034012) index="0" unique_id=927083437]
+[node name="OverlayFeedback" type="Node" parent="closed" parent_id_path=PackedInt32Array(113034012) index="0" unique_id=1939072564]
 script = ExtResource("2_onxqv")
 metadata/_custom_type_script = "uid://befwp8hswkm6t"
