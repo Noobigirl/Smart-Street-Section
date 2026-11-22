@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://cy4ddwr26ciox"]
 
+[ext_resource type="PackedScene" uid="uid://caqwq6ueaqfgt" path="res://3d_scenes/grasspatch.tscn" id="1_83jsx"]
 [ext_resource type="PackedScene" uid="uid://biem15e5p0bc4" path="res://3d_scenes/street_section/street_section.tscn" id="1_132de"]
+[ext_resource type="PackedScene" uid="uid://cvde0pgpx655j" path="res://3d_scenes/closed_channel.tscn" id="3_aq4bg"]
+[ext_resource type="PackedScene" uid="uid://bknqer2wa7gob" path="res://3d_scenes/middle_channel.tscn" id="4_1c485"]
+[ext_resource type="PackedScene" uid="uid://go5bqsuxd8qq" path="res://3d_scenes/edge_channel.tscn" id="5_ls1bf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tnwvm"]
 sky_top_color = Color(0.5059727, 0.7409701, 0.72204995, 1)
@@ -32,6 +36,9 @@ size = Vector3(30, 0.3, 30)
 
 [node name="World" type="Node3D" unique_id=148720408]
 
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1160022686]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -35, 10, 0)
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=767432727]
 environment = SubResource("Environment_55u4n")
 
@@ -40,7 +47,10 @@ transform = Transform3D(-0.962218, -0.26186314, 0.074593686, 0, 0.27395925, 0.96
 light_color = Color(0.43529412, 0.4862745, 0.4862745, 1)
 light_indirect_energy = 0.0
 shadow_enabled = true
-directional_shadow_max_distance = 24.0
+shadow_bias = 0.892
+shadow_normal_bias = 1.352
+shadow_opacity = 0.92
+directional_shadow_max_distance = 7.5
 
 [node name="Floor" type="Node3D" parent="." unique_id=1750459848]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
@@ -56,8 +66,42 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
 shape = SubResource("BoxShape3D_1ffxv")
 debug_color = Color(0.7696154, 0.40394756, 0.50025624, 0.85490197)
 
+[node name="grasspatch" parent="." unique_id=55790287 instance=ExtResource("1_83jsx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -18.848953, 1.091613, -7.022627)
+
+[node name="grasspatch2" parent="." unique_id=717755076 instance=ExtResource("1_83jsx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.0215063, 1.091613, -7.022627)
+
+[node name="grasspatch5" parent="." unique_id=1227814225 instance=ExtResource("1_83jsx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7.241763, 1.091613, -7.022627)
+
+[node name="grasspatch3" parent="." unique_id=1379476350 instance=ExtResource("1_83jsx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.770522, 1.091613, -7.022627)
+
+[node name="grasspatch4" parent="." unique_id=261920477 instance=ExtResource("1_83jsx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 18.661224, 1.091613, -7.022627)
+
 [node name="StreetSection" parent="." unique_id=857182125 instance=ExtResource("1_132de")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16953087, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1160022686]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -35, 10, 0)
+[node name="channel" type="Node3D" parent="." unique_id=1324923146]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.3962145, 0.6187515, -15.323936)
+
+[node name="ClosedChannel" parent="channel" unique_id=1437359752 instance=ExtResource("3_aq4bg")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -8.272155, -0.80821824, -30.450592)
+visible = false
+
+[node name="MiddleChannel" parent="channel" unique_id=471620333 instance=ExtResource("4_1c485")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -8.273935, -0.79875153, -20.396215)
+
+[node name="MiddleChannel2" parent="channel" unique_id=826309930 instance=ExtResource("4_1c485")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -8.273935, -0.79875153, -2.801628)
+
+[node name="MiddleChannel3" parent="channel" unique_id=1557401735 instance=ExtResource("4_1c485")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -8.273935, -0.79875153, -10.525096)
+
+[node name="EdgeChannel" parent="channel" unique_id=1656402426 instance=ExtResource("5_ls1bf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.273934, -0.79875153, -30.396215)
+
+[node name="EdgeChannel2" parent="channel" unique_id=218550736 instance=ExtResource("5_ls1bf")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -8.273936, -0.79875153, 7.4670944)

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://go5bqsuxd8qq"]
+
+[ext_resource type="PackedScene" uid="uid://prm8u3gqf74u" path="res://assets/Models/edgeChannel/edge_channel.glb" id="1_dh8tq"]
+
+[node name="EdgeChannel" unique_id=1656402426 instance=ExtResource("1_dh8tq")]

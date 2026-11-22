@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cvde0pgpx655j"]
+
+[ext_resource type="PackedScene" uid="uid://dn3wtra8bjsc8" path="res://assets/Models/closedChannel/closed_channel.glb" id="1_elm41"]
+
+[node name="ClosedChannel" unique_id=1437359752 instance=ExtResource("1_elm41")]

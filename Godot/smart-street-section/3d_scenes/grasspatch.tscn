@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://caqwq6ueaqfgt"]
+
+[ext_resource type="PackedScene" uid="uid://13f1h5hypee0" path="res://assets/Models/grassPatch/grasspatch.glb" id="1_7mj86"]
+
+[node name="grasspatch" unique_id=55790287 instance=ExtResource("1_7mj86")]
