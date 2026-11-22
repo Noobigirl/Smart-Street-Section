@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://caqwq6ueaqfgt"]
 
 [ext_resource type="PackedScene" uid="uid://13f1h5hypee0" path="res://assets/Models/grassPatch/grasspatch.glb" id="1_7mj86"]
+[ext_resource type="Script" uid="uid://befwp8hswkm6t" path="res://3d_scenes/interactive_object.gd" id="2_ii71c"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mksn4"]
 size = Vector3(11.891777, 2.1242676, 4.0983276)
@@ -13,3 +14,7 @@ size = Vector3(11.891777, 2.1242676, 4.0983276)
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.013153076, 0.274292, 0.08047867)
 shape = SubResource("BoxShape3D_mksn4")
 debug_color = Color(0.34509805, 0.61960787, 0.12941177, 0.9019608)
+
+[node name="InteractiveObject" type="Node" parent="ground" parent_id_path=PackedInt32Array(640047509) index="1" unique_id=899107703]
+script = ExtResource("2_ii71c")
+metadata/_custom_type_script = "uid://befwp8hswkm6t"

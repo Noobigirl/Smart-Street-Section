@@ -1,5 +1,10 @@
 [gd_scene format=3 uid="uid://go5bqsuxd8qq"]
 
 [ext_resource type="PackedScene" uid="uid://prm8u3gqf74u" path="res://assets/Models/edgeChannel/edge_channel.glb" id="1_dh8tq"]
+[ext_resource type="Script" uid="uid://befwp8hswkm6t" path="res://3d_scenes/interactive_object.gd" id="2_etsw8"]
 
 [node name="EdgeChannel" unique_id=1656402426 instance=ExtResource("1_dh8tq")]
+
+[node name="InteractiveObject" type="Node" parent="edge" parent_id_path=PackedInt32Array(1167644643) index="0" unique_id=32336663]
+script = ExtResource("2_etsw8")
+metadata/_custom_type_script = "uid://befwp8hswkm6t"
