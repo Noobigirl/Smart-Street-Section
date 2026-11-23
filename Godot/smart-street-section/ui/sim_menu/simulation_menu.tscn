@@ -134,3 +134,15 @@ text = "Bioretention Area Share                                  value"
 
 [node name="HSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/CatchmentGeometry/SliderContainer/SliderContainer" unique_id=644637337]
 layout_mode = 2
+
+[node name="Button" type="Button" parent="." unique_id=590469452]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -106.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Change view"
