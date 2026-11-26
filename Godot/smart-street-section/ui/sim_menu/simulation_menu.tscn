@@ -1,8 +1,19 @@
 [gd_scene format=3 uid="uid://lnqoypv8jc76"]
 
+[sub_resource type="GDScript" id="GDScript_8tiwq"]
+resource_name = "camera_button"
+script/source = "extends Button
+
+@export var camera_manager: Node
+
+func _on_pressed() -> void:
+	camera_manager.switch_camera()
+"
+
 [node name="SimulationMenu" type="CanvasLayer" unique_id=1730296391]
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=958884508]
+visible = false
 custom_maximum_size = Vector2(450, 640)
 offset_right = 435.0
 offset_bottom = 620.0
@@ -135,7 +146,7 @@ text = "Bioretention Area Share                                  value"
 [node name="HSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/CatchmentGeometry/SliderContainer/SliderContainer" unique_id=644637337]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="." unique_id=590469452]
+[node name="CameraButton" type="Button" parent="." unique_id=590469452]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -146,3 +157,6 @@ offset_top = -31.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "Change view"
+script = SubResource("GDScript_8tiwq")
+
+[connection signal="pressed" from="CameraButton" to="CameraButton" method="_on_pressed"]
